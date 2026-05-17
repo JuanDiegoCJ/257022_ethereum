@@ -12,22 +12,31 @@ contract Cafeteria257022 {
         uint256 id;
         string nombre;
         uint256 precio;
+        bool estado;
     }
 
     Cafe[] public cafes;
 
-    constructor() {
+    modifier registrarEjecucion() {
         console.log("Ejecutado por: 257022 - Juan Diego Carranza Jacinto");
+        _;
+    }
+
+    constructor() registrarEjecucion {
         dirContrato = address(this);
     }
 
-    function agregarElemento(uint256 _id, string memory _nombre, uint256 _precio) public {
-        console.log("Ejecutado por: 257022 - Juan Diego Carranza Jacinto");
-        cafes.push(Cafe(_id, _nombre, _precio));
+    function agregarElemento(uint256 _id, string memory _nombre, uint256 _precio) public registrarEjecucion {
+        for (uint256 i = 0; i < cafes.length; i++) {
+            require(cafes[i].id != _id, "Cafe con ese ID ya existe");
+        }
+
+        require(_precio > 0, "El precio debe ser mayor a cero");
+
+        cafes.push(Cafe(_id, _nombre, _precio, true));
     }
 
-    function contarElementos() public view returns (uint256) {
-        console.log("Ejecutado por: 257022 - Juan Diego Carranza Jacinto");
+    function contarElementos() public view registrarEjecucion returns (uint256) {
         return cafes.length;
     }
 }
