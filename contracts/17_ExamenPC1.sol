@@ -12,7 +12,7 @@ contract Cafeteria257022 {
         uint256 id;
         string nombre;
         uint256 precio;
-        bool estado;
+        bool estado; 
     }
 
     Cafe[] public cafes;
@@ -28,7 +28,7 @@ contract Cafeteria257022 {
 
     function agregarElemento(uint256 _id, string memory _nombre, uint256 _precio) public registrarEjecucion {
         for (uint256 i = 0; i < cafes.length; i++) {
-            require(cafes[i].id != _id, "Cafe con ese ID ya existe");
+            require(cafes[i].id != _id, "El ID ya existe");
         }
 
         require(_precio > 0, "El precio debe ser mayor a cero");
@@ -38,5 +38,18 @@ contract Cafeteria257022 {
 
     function contarElementos() public view registrarEjecucion returns (uint256) {
         return cafes.length;
+    }
+
+    function inactivarElemento(uint256 _posicion) public registrarEjecucion {
+        require(_posicion < cafes.length, "Posicion invalida");
+        cafes[_posicion].estado = false;
+    }
+
+    function pintarElementosActivos() public view registrarEjecucion {
+        for (uint256 i = 0; i < cafes.length; i++) {
+            if (cafes[i].estado == true) {
+                console.log("Cafe activo:", cafes[i].id, cafes[i].nombre);
+            }
+        }
     }
 }
